@@ -2,8 +2,8 @@
 requires = [
     "setuptools>=68",
     "wheel",
-    "Cython>=0.29.32,<3.0",      # Safe range that matches your original conda files
-    "numpy>=1.17.4",             # Required because setup.py calls np.get_include()
+    "Cython>=0.29.32,<3.0",   # matches your original conda environment
+    "numpy>=1.17.4",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -32,11 +32,17 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = [
-    "pytest",
-    "pytest-cov",
-]
+test = ["pytest", "pytest-cov"]
 
-[project.urls]
-Homepage = "https://github.com/triston-groff/SpectralEntropy"
-Repository = "https://github.com/triston-groff/SpectralEntropy"
+[tool.setuptools]
+packages = ["spectral_entropy"]
+
+[tool.setuptools.package-data]
+"spectral_entropy" = ["*.pyx"]
+
+
+# Cython extension configuration
+[tool.setuptools.extension]
+ext_modules = [
+    {name = "spectral_entropy.tools_fast", sources = ["spectral_entropy/tools_fast.pyx"]}
+]
